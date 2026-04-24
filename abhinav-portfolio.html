@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhinav Tomar — SAP Analyst & Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#07070a;
+  --surface:#111114;
+  --border:rgba(255,255,255,0.07);
+  --text:#ece9e3;
+  --muted:#52504c;
+  --accent:#c8f562;
+  --serif:'DM Serif Display',serif;
+  --sans:'Syne',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;cursor:none;}
+
+#cd,#cr{position:fixed;pointer-events:none;z-index:9999;top:0;left:0;transform:translate(-50%,-50%);}
+#cdi{width:7px;height:7px;background:var(--accent);border-radius:50%;transition:width .35s,height .35s;}
+#cri{width:36px;height:36px;border:1px solid rgba(200,245,98,.22);border-radius:50%;transition:width .35s,height .35s;}
+#cdi.h{width:52px;height:52px;background:rgba(200,245,98,.08);}
+#cri.h{width:72px;height:72px;}
+@media(hover:none){#cd,#cr{display:none;}body{cursor:auto;}}
+
+#loader{position:fixed;inset:0;z-index:2000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .9s ease,visibility .9s ease;}
+#loader.out{opacity:0;visibility:hidden;}
+.ld-w{font-family:var(--serif);font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.02em;}
+.ld-w em{color:var(--accent);font-style:italic;}
+.ld-bar{width:160px;height:1px;background:rgba(255,255,255,.08);}
+.ld-prog{height:1px;background:var(--accent);width:0%;transition:width .07s linear;}
+.ld-n{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;}
+
+#cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 52px;display:flex;justify-content:space-between;align-items:center;background:rgba(7,7,10,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo{font-family:var(--serif);font-size:1.25rem;letter-spacing:-.02em;color:var(--text);text-decoration:none;}
+.logo em{color:var(--accent);font-style:italic;}
+.nav-ul{display:flex;gap:36px;list-style:none;}
+.nav-ul a{font-family:var(--mono);font-size:.7rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;}
+.nav-ul a:hover{color:var(--accent);}
+.nav-cta{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:10px 22px;border:1px solid var(--border);border-radius:100px;color:var(--text);text-decoration:none;transition:all .35s;}
+.nav-cta:hover{background:var(--accent);color:#000;border-color:var(--accent);}
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:3px;}
+.hbg span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s;transform-origin:center;}
+.hbg.o span:first-child{transform:translateY(6.5px) rotate(45deg);}
+.hbg.o span:nth-child(2){opacity:0;}
+.hbg.o span:last-child{transform:translateY(-6.5px) rotate(-45deg);}
+.mob{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(7,7,10,.97);backdrop-filter:blur(24px);z-index:99;padding:40px 52px;flex-direction:column;gap:24px;border-bottom:1px solid var(--border);opacity:0;transform:translateY(-8px);transition:all .35s;}
+.mob.o{display:flex;opacity:1;transform:translateY(0);}
+.mob a{font-family:var(--serif);font-size:2.2rem;color:var(--text);text-decoration:none;letter-spacing:-.02em;transition:color .3s;}
+.mob a:hover{color:var(--accent);}
+
+section{position:relative;z-index:1;}
+
+#hero{height:100vh;display:grid;grid-template-columns:1fr 420px;align-items:flex-end;padding:0 52px 88px;gap:60px;}
+.hero-left{display:flex;flex-direction:column;justify-content:flex-end;}
+.h-eye{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.h-eye::before{content:'';width:28px;height:1px;background:var(--muted);}
+.h-title{font-family:var(--serif);font-size:clamp(3.8rem,7.5vw,8rem);line-height:.92;letter-spacing:-.03em;margin-bottom:36px;}
+.h-title em{color:var(--accent);font-style:italic;}
+.h-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;}
+.h-desc{font-family:var(--mono);font-size:.8rem;color:var(--muted);line-height:1.95;max-width:360px;}
+.scrl{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;flex-shrink:0;}
+.scrl:hover{color:var(--accent);}
+.scrl-pill{width:32px;height:50px;border:1px solid rgba(255,255,255,.1);border-radius:100px;position:relative;flex-shrink:0;}
+.scrl-bead{width:4px;height:4px;background:var(--accent);border-radius:50%;position:absolute;top:9px;left:50%;transform:translateX(-50%);animation:bd 2.2s ease infinite;}
+@keyframes bd{0%{top:9px;opacity:1;}100%{top:30px;opacity:0;}}
+
+/* PHOTO CARD */
+.hero-photo-wrap{
+  position:relative;
+  align-self:flex-end;
+  padding-bottom:88px;
+}
+.photo-card{
+  width:100%;
+  aspect-ratio:3/4;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  position:relative;
+  box-shadow:0 0 80px rgba(200,245,98,.06), 0 40px 80px rgba(0,0,0,.5);
+}
+.photo-card img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(15%) contrast(1.05);}
+.photo-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(7,7,10,.8) 0%, transparent 50%);
+  pointer-events:none;
+}
+.photo-badge{
+  position:absolute;bottom:20px;left:20px;right:20px;z-index:1;
+}
+.photo-name{font-family:var(--serif);font-size:1.5rem;letter-spacing:-.02em;margin-bottom:4px;}
+.photo-role{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;}
+.photo-company{
+  display:inline-flex;align-items:center;gap:8px;margin-top:10px;
+  font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.06em;
+}
+.dot-pulse{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:fp 2.2s ease infinite;flex-shrink:0;}
+@keyframes fp{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+.ticker-wrap{position:relative;z-index:1;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:16px 0;background:var(--surface);}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 22s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.tick-item{font-family:var(--serif);font-size:1.2rem;padding:0 28px;display:inline-flex;align-items:center;gap:20px;color:var(--muted);flex-shrink:0;letter-spacing:-.01em;}
+.tick-dot{color:var(--accent);font-size:.6rem;}
+
+#work{padding:120px 52px 100px;border-top:1px solid var(--border);}
+.sec-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;gap:24px;flex-wrap:wrap;}
+.sec-lbl{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sec-lbl::before{content:'';width:20px;height:1px;background:var(--muted);}
+.sec-h{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4.8rem);line-height:1;letter-spacing:-.025em;}
+.see-all{font-family:var(--mono);font-size:.66rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;transition:color .3s;white-space:nowrap;}
+.see-all:hover{color:var(--accent);}
+.see-all .ar{transition:transform .3s;display:inline-block;}
+.see-all:hover .ar{transform:translateX(4px);}
+
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.pc{background:var(--surface);padding:44px 40px 36px;min-height:300px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;text-decoration:none;color:inherit;overflow:hidden;position:relative;transition:background .4s;transform-style:preserve-3d;will-change:transform;}
+.pc.wide{grid-column:1/-1;min-height:400px;}
+.pc-glow{position:absolute;inset:0;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(200,245,98,.055),transparent 55%);opacity:0;transition:opacity .45s;pointer-events:none;}
+.pc:hover{background:#171718;}
+.pc:hover .pc-glow{opacity:1;}
+.p-num{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.1em;}
+.p-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;}
+.ptag{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border);border-radius:100px;}
+.p-name{font-family:var(--serif);font-size:clamp(1.7rem,2.8vw,2.6rem);line-height:1.05;letter-spacing:-.02em;transition:color .35s;flex:1;display:flex;align-items:center;}
+.pc:hover .p-name{color:var(--accent);}
+.p-foot{display:flex;justify-content:space-between;align-items:flex-end;}
+.p-url{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.06em;}
+.p-arr{width:38px;height:38px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:1rem;transition:all .35s;}
+.pc:hover .p-arr{background:var(--accent);border-color:var(--accent);color:#000;transform:rotate(45deg);}
+
+#skills{padding:120px 52px;border-top:1px solid var(--border);}
+.skgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:56px;background:var(--border);}
+.skc{background:var(--bg);padding:40px 34px;transition:background .3s;}
+.skc:hover{background:var(--surface);}
+.sk-ico{font-size:1.4rem;margin-bottom:20px;display:block;}
+.sk-name{font-family:var(--serif);font-size:1.45rem;letter-spacing:-.01em;margin-bottom:10px;}
+.sk-desc{font-family:var(--mono);font-size:.74rem;color:var(--muted);line-height:1.9;}
+
+#about{padding:120px 52px;border-top:1px solid var(--border);display:grid;grid-template-columns:1.1fr 1fr;gap:100px;align-items:center;}
+.ab-body{font-family:var(--mono);font-size:.82rem;color:var(--muted);line-height:1.95;margin-top:24px;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.st{background:var(--bg);padding:36px 28px;transition:background .3s;}
+.st:hover{background:var(--surface);}
+.st-n{font-family:var(--serif);font-size:3.8rem;color:var(--accent);line-height:1;letter-spacing:-.02em;}
+.st-l{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:5px;}
+
+#contact{padding:160px 52px 140px;border-top:1px solid var(--border);text-align:center;}
+.c-h{font-family:var(--serif);font-size:clamp(3rem,8.5vw,8.5rem);line-height:.92;letter-spacing:-.03em;margin-bottom:52px;}
+.c-h em{color:var(--accent);font-style:italic;}
+.c-btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding:18px 40px;background:var(--accent);color:#000;border-radius:100px;text-decoration:none;transition:all .35s;}
+.c-btn:hover{background:#fff;transform:translateY(-3px);}
+.c-links{display:flex;justify-content:center;gap:28px;margin-top:52px;flex-wrap:wrap;}
+.c-lnk{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.08em;transition:color .3s;}
+.c-lnk:hover{color:var(--accent);}
+
+footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;flex-wrap:wrap;gap:12px;}
+.f-t{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.06em;}
+.f-a{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.66rem;color:var(--muted);}
+.f-a::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:fp 2.2s ease infinite;}
+
+.rv{opacity:0;transform:translateY(22px);transition:opacity .85s ease,transform .85s ease;}
+.rv.in{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;padding:100px 24px 60px;}
+  .hero-photo-wrap{display:none;}
+}
+@media(max-width:768px){
+  nav{padding:18px 24px;}
+  .nav-ul,.nav-cta{display:none;}
+  .hbg{display:flex;}
+  .mob{padding:32px 24px;}
+  .h-row{flex-direction:column;align-items:flex-start;gap:24px;}
+  .scrl{display:none;}
+  #work,#skills,#about,#contact{padding:80px 24px 60px;}
+  .pgrid{grid-template-columns:1fr;}
+  .pc.wide{grid-column:1;}
+  .pc{padding:32px 28px;min-height:240px;}
+  .skgrid{grid-template-columns:1fr;}
+  #about{grid-template-columns:1fr;gap:52px;}
+  footer{padding:24px;}
+}
+@media(max-width:480px){.stats{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="ld-w">Abhinav <em>Tomar</em></div>
+  <div class="ld-bar"><div class="ld-prog" id="lp"></div></div>
+  <div class="ld-n" id="ln">0%</div>
+</div>
+
+<div id="cd"><div id="cdi"></div></div>
+<div id="cr"><div id="cri"></div></div>
+<canvas id="cv"></canvas>
+
+<nav>
+  <a href="#" class="logo">Abhinav <em>Tomar</em></a>
+  <ul class="nav-ul">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire me</a>
+  <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+</nav>
+<div class="mob" id="mob">
+  <a href="#work">Work</a><a href="#skills">Skills</a>
+  <a href="#about">About</a><a href="#contact">Contact</a>
+</div>
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="h-eye rv">SAP Analyst · Deloitte · Chennai, India</div>
+    <h1 class="h-title rv">Building<br>impact<br>through<br><em>technology.</em></h1>
+    <div class="h-row rv">
+      <p class="h-desc">Computer Science graduate from SRM University. Currently at Deloitte applying analytical thinking and software engineering to solve real-world business challenges.</p>
+      <a href="#work" class="scrl"><div class="scrl-pill"><div class="scrl-bead"></div></div>Explore</a>
+    </div>
+  </div>
+
+  <div class="hero-photo-wrap rv">
+    <div class="photo-card">
+      <img src="photo-output.HEIC" alt="Abhinav Tomar">
+      <div class="photo-badge">
+        <div class="photo-name">Abhinav Tomar</div>
+        <div class="photo-role">SAP Analyst @ Deloitte</div>
+        <div class="photo-company"><span class="dot-pulse"></span>Open to opportunities · Chennai, India</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap"><div class="ticker-track" id="tt"></div></div>
+
+<section id="work">
+  <div class="sec-row">
+    <div><div class="sec-lbl rv">Projects</div><h2 class="sec-h rv">What I've<br>shipped.</h2></div>
+    <a href="https://github.com" class="see-all rv" target="_blank">View all <span class="ar">→</span></a>
+  </div>
+  <div class="pgrid">
+
+    <a href="https://s-psi-six.vercel.app" target="_blank" class="pc wide rv">
+      <div class="pc-glow"></div>
+      <div><div class="p-num">01 — Featured</div><div class="p-tags"><span class="ptag">React</span><span class="ptag">Vercel</span><span class="ptag">Full Stack</span></div></div>
+      <div class="p-name">Baby Crib Monitor</div>
+      <div class="p-foot"><span class="p-url">s-psi-six.vercel.app</span><div class="p-arr">↗</div></div>
+    </a>
+
+    <a href="https://ambulance-booking-system-bay.vercel.app" target="_blank" class="pc rv">
+      <div class="pc-glow"></div>
+      <div><div class="p-num">02</div><div class="p-tags"><span class="ptag">Healthcare</span><span class="ptag">React</span></div></div>
+      <div class="p-name">Ambulance Booking System</div>
+      <div class="p-foot"><span class="p-url">ambulance-booking-system-bay.vercel.app</span><div class="p-arr">↗</div></div>
+    </a>
+
+    <a href="https://rwms-dun.vercel.app/login" target="_blank" class="pc rv">
+      <div class="pc-glow"></div>
+      <div><div class="p-num">03</div><div class="p-tags"><span class="ptag">Enterprise</span><span class="ptag">Management</span></div></div>
+      <div class="p-name">RWMS — Reward Based Waste Mangement System</div>
+      <div class="p-foot"><span class="p-url">rwms-dun.vercel.app</span><div class="p-arr">↗</div></div>
+    </a>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec-lbl rv">Expertise</div>
+  <h2 class="sec-h rv">Skills &<br>tools.</h2>
+  <div class="skgrid">
+    <div class="skc rv"><span class="sk-ico">◈</span><div class="sk-name">SAP & ERP</div><div class="sk-desc">SAP Analysis · S/4HANA · ERP consulting · business process optimization · Deloitte delivery frameworks</div></div>
+    <div class="skc rv"><span class="sk-ico">⬡</span><div class="sk-name">Frontend Dev</div><div class="sk-desc">React · Next.js · JavaScript · TypeScript · Tailwind · responsive & accessible UI</div></div>
+    <div class="skc rv"><span class="sk-ico">◉</span><div class="sk-name">Backend & APIs</div><div class="sk-desc">Node.js · REST APIs · databases · system design · scalable architecture</div></div>
+    <div class="skc rv"><span class="sk-ico">▣</span><div class="sk-name">Problem Solving</div><div class="sk-desc">Analytical thinking · data-driven decisions · consulting mindset · agile workflows</div></div>
+    <div class="skc rv"><span class="sk-ico">◎</span><div class="sk-name">Cloud & Deployment</div><div class="sk-desc">Vercel · cloud platforms · CI/CD pipelines · performance optimization</div></div>
+    <div class="skc rv"><span class="sk-ico">⬢</span><div class="sk-name">Leadership</div><div class="sk-desc">Team collaboration · client communication · project delivery · cross-functional coordination</div></div>
+  </div>
+</section>
+
+<section id="about">
+  <div>
+    <div class="sec-lbl rv">About me</div>
+    <h2 class="sec-h rv" style="margin-bottom:0">Where logic<br>meets <em style="color:var(--accent)">innovation.</em></h2>
+    <p class="ab-body rv">Born and raised in Delhi. Schooled at Delhi Public School, Ghaziabad (Vasundhara) with distinction. B.Tech in Computer Science with specialization in Software Engineering from SRM University, Chennai. Now at Deloitte, applying technical foundations and analytical thinking to scalable, impactful software solutions. Passionate about technology and driven by continuous learning.</p>
+  </div>
+  <div class="stats rv">
+    <div class="st"><div class="st-n">3+</div><div class="st-l">Live Projects</div></div>
+    <div class="st"><div class="st-n">B.Tech</div><div class="st-l">CS Engineering</div></div>
+    <div class="st"><div class="st-n">CBSE </div><div class="st-l">First Distinction</div></div>
+    <div class="st"><div class="st-n">∞</div><div class="st-l">Curiosity</div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="c-h rv">Let's build<br>something <em>great</em><br>together.</h2>
+  <a href="https://www.linkedin.com/in/7bhinav/" class="c-btn rv" target="_blank">Connect on LinkedIn ↗</a>
+  <div class="c-links rv">
+    <a href="https://www.linkedin.com/in/7bhinav/" class="c-lnk" target="_blank">LinkedIn</a>
+    <a href="https://github.com/7bhinav" class="c-lnk" target="_blank">GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <span class="f-t">© 2025 Abhinav Tomar · Chennai, India</span>
+  <div class="f-a">SAP Analyst @ Deloitte</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const lpEl=document.getElementById('lp'),lnEl=document.getElementById('ln'),loader=document.getElementById('loader');
+let pct=0;
+const li=setInterval(()=>{pct=Math.min(pct+Math.random()*12,99);lpEl.style.width=pct+'%';lnEl.textContent=Math.floor(pct)+'%';},90);
+window.addEventListener('load',()=>{clearInterval(li);lpEl.style.width='100%';lnEl.textContent='100%';setTimeout(()=>loader.classList.add('out'),700);});
+
+const words=['SAP','Deloitte','React','Node.js','SRM University','Full Stack','Delhi','Chennai','ERP','TypeScript','Problem Solving','Cloud'];
+const tt=document.getElementById('tt');
+tt.innerHTML=[...words,...words,...words,...words].map(w=>`<span class="tick-item">${w}<span class="tick-dot">✦</span></span>`).join('');
+tt.innerHTML+=tt.innerHTML;
+
+const cv=document.getElementById('cv');
+const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x07070a,0.02);
+const camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,300);
+camera.position.set(0,0,12);
+
+scene.add(new THREE.AmbientLight(0x06060e,5));
+const L1=new THREE.PointLight(0xc8f562,12,30); L1.position.set(4,5,5); scene.add(L1);
+const L2=new THREE.PointLight(0x4433ff,7,28);  L2.position.set(-5,-2,4); scene.add(L2);
+const L3=new THREE.PointLight(0xffffff,4,20);  L3.position.set(0,0,8); scene.add(L3);
+const L4=new THREE.PointLight(0xff2266,3,24);  L4.position.set(2,-5,2); scene.add(L4);
+
+const GEO_DETAIL=6;
+const gemGeo=new THREE.IcosahedronGeometry(2,GEO_DETAIL);
+const origPositions=new Float32Array(gemGeo.attributes.position.array);
+const gemMat=new THREE.MeshPhongMaterial({color:0x090912,shininess:320,specular:new THREE.Color(0xc8f562),transparent:true,opacity:.92});
+const gem=new THREE.Mesh(gemGeo,gemMat);
+scene.add(gem);
+const gemWire=new THREE.Mesh(new THREE.IcosahedronGeometry(2.02,2),new THREE.MeshBasicMaterial({color:0xc8f562,wireframe:true,transparent:true,opacity:.045}));
+gem.add(gemWire);
+const core=new THREE.Mesh(new THREE.IcosahedronGeometry(.8,3),new THREE.MeshBasicMaterial({color:0xc8f562,transparent:true,opacity:.06}));
+gem.add(core);
+
+function makeDiamond(size){
+  const g=new THREE.BufferGeometry();
+  const h=size,w=size*.55,d=size*.18;
+  const v=new Float32Array([0,h,0,w,0,0,0,0,d,0,h,0,0,0,d,-w,0,0,0,h,0,-w,0,0,0,0,-d,0,h,0,0,0,-d,w,0,0,0,-h*.6,0,w,0,0,0,0,d,0,-h*.6,0,0,0,d,-w,0,0,0,-h*.6,0,-w,0,0,0,0,-d,0,-h*.6,0,0,0,-d,w,0,0]);
+  g.setAttribute('position',new THREE.BufferAttribute(v,3));
+  g.computeVertexNormals();
+  return g;
+}
+const shardGroup=new THREE.Group();
+const SHARD_COUNT=14;
+const shardColors=[0xc8f562,0x8866ff,0xffffff,0xaaddff,0xc8f562,0xaaddff,0x8866ff];
+for(let i=0;i<SHARD_COUNT;i++){
+  const size=.22+Math.random()*.42;
+  const shard=new THREE.Mesh(makeDiamond(size),new THREE.MeshPhongMaterial({color:shardColors[i%shardColors.length],shininess:250,specular:new THREE.Color(0xffffff),transparent:true,opacity:.55+Math.random()*.3,flatShading:true}));
+  const phi=Math.acos(-1+(2*i)/SHARD_COUNT);
+  const theta=Math.sqrt(SHARD_COUNT*Math.PI)*phi+Math.random()*.8;
+  const r=3.2+Math.random()*1.4;
+  shard.position.set(r*Math.sin(phi)*Math.cos(theta),r*Math.sin(phi)*Math.sin(theta),r*Math.cos(phi));
+  shard.userData={orbitSpeed:.15+Math.random()*.35,orbitAxis:new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize(),spinAxis:new THREE.Vector3(Math.random(),Math.random(),Math.random()).normalize(),phase:Math.random()*Math.PI*2};
+  shardGroup.add(shard);
+}
+scene.add(shardGroup);
+
+const rayGroup=new THREE.Group();
+for(let i=0;i<18;i++){
+  const len=2.5+Math.random()*4;
+  const ray=new THREE.Mesh(new THREE.CylinderGeometry(.004,.001,len,4),new THREE.MeshBasicMaterial({color:i%3===0?0xc8f562:i%3===1?0x8866ff:0xffffff,transparent:true,opacity:.1+Math.random()*.12}));
+  ray.position.y=len/2;
+  const holder=new THREE.Object3D();
+  holder.add(ray);
+  holder.rotation.set((Math.random()-.5)*Math.PI,(Math.random()-.5)*Math.PI,(Math.random()-.5)*Math.PI);
+  holder.userData.speed=(Math.random()-.5)*.008;
+  rayGroup.add(holder);
+}
+scene.add(rayGroup);
+
+const SP_COUNT=800;
+const spGeo=new THREE.BufferGeometry();
+const spPos=new Float32Array(SP_COUNT*3);
+const spCol=new Float32Array(SP_COUNT*3);
+const sparkleColors=[[.784,.961,.384],[.533,.4,1],[1,1,1],[.67,.87,1]];
+for(let i=0;i<SP_COUNT;i++){
+  const r=2.5+Math.random()*7;
+  const theta=Math.random()*Math.PI*2;
+  const phi=Math.acos(2*Math.random()-1);
+  spPos[i*3]=r*Math.sin(phi)*Math.cos(theta);
+  spPos[i*3+1]=r*Math.sin(phi)*Math.sin(theta);
+  spPos[i*3+2]=r*Math.cos(phi);
+  const c=sparkleColors[Math.floor(Math.random()*4)];
+  const b=.4+Math.random()*.6;
+  spCol[i*3]=c[0]*b;spCol[i*3+1]=c[1]*b;spCol[i*3+2]=c[2]*b;
+}
+spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
+spGeo.setAttribute('color',new THREE.BufferAttribute(spCol,3));
+const sparkles=new THREE.Points(spGeo,new THREE.PointsMaterial({size:.04,vertexColors:true,transparent:true,opacity:.8,sizeAttenuation:true}));
+scene.add(sparkles);
+
+function makeRing(r,col,op,rx,ry){const m=new THREE.Mesh(new THREE.TorusGeometry(r,.007,4,160),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op}));m.rotation.set(rx,ry,0);return m;}
+const rings=[makeRing(3.2,0xc8f562,.18,Math.PI/2,0),makeRing(4.1,0x8866ff,.10,Math.PI/2+.6,.4),makeRing(5.0,0xffffff,.06,1.1,.9),makeRing(2.6,0xc8f562,.10,.3,Math.PI/3)];
+rings.forEach(r=>scene.add(r));
+
+let mx=0,my=0,smx=0,smy=0,scrollY=0;
+document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=-(e.clientY/innerHeight-.5)*2;});
+document.addEventListener('touchmove',e=>{mx=(e.touches[0].clientX/innerWidth-.5)*2;my=-(e.touches[0].clientY/innerHeight-.5)*2;},{passive:true});
+window.addEventListener('scroll',()=>scrollY=window.scrollY);
+window.addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
+
+const clk=new THREE.Clock();
+function tick(){
+  requestAnimationFrame(tick);
+  const t=clk.getElapsedTime();
+  smx+=(mx-smx)*.04;smy+=(my-smy)*.04;
+  const pos=gemGeo.attributes.position;
+  for(let i=0;i<pos.count;i++){
+    const ox=origPositions[i*3],oy=origPositions[i*3+1],oz=origPositions[i*3+2];
+    const n1=Math.sin(ox*1.8+t*.7)*Math.cos(oy*1.8+t*.6)*Math.sin(oz*1.8+t*.5);
+    const n2=Math.cos(ox*3.2+t*1.1)*Math.sin(oy*2.9+t*1.3)*.5;
+    const n3=Math.sin(ox*5+t*1.8)*Math.cos(oz*5+t*2)*.25;
+    const disp=1+(n1*.12+n2*.06+n3*.03);
+    pos.setXYZ(i,ox*disp,oy*disp,oz*disp);
+  }
+  pos.needsUpdate=true;
+  gemGeo.computeVertexNormals();
+  gem.rotation.y=t*.12+smx*.28;
+  gem.rotation.x=t*.08+smy*.18;
+  core.material.opacity=.04+Math.abs(Math.sin(t*1.4))*.08;
+  core.scale.setScalar(.8+Math.sin(t*1.2)*.1);
+  shardGroup.children.forEach(s=>{
+    s.position.applyAxisAngle(s.userData.orbitAxis,s.userData.orbitSpeed*.008);
+    s.rotateOnAxis(s.userData.spinAxis,.012);
+    s.material.opacity=.45+Math.abs(Math.sin(t*.6+s.userData.phase))*.35;
+  });
+  rayGroup.children.forEach(r=>{r.rotation.y+=r.userData.speed;r.rotation.x+=r.userData.speed*.7;});
+  rayGroup.rotation.y=t*.04;
+  rings[0].rotation.z=t*.09;
+  rings[1].rotation.y=t*.07;rings[1].rotation.x=Math.PI/2+.6+t*.04;
+  rings[2].rotation.z=-t*.05;rings[2].rotation.y=.9+t*.03;
+  rings[3].rotation.y=t*.11;rings[3].rotation.z=t*.06;
+  sparkles.rotation.y=t*.018;sparkles.rotation.x=t*.009;
+  L1.intensity=10+Math.sin(t*1.1)*4;
+  L2.intensity=6+Math.cos(t*.9)*2.5;
+  L4.intensity=2.5+Math.sin(t*.7);
+  camera.position.x+=(smx*.9-camera.position.x)*.05;
+  camera.position.y+=(smy*.55-camera.position.y)*.05;
+  const tz=12+scrollY*.0035;
+  camera.position.z+=(tz-camera.position.z)*.06;
+  camera.lookAt(0,0,0);
+  renderer.render(scene,camera);
+}
+tick();
+
+document.querySelectorAll('.pc').forEach(c=>{
+  const glow=c.querySelector('.pc-glow');
+  c.addEventListener('mouseenter',()=>c.style.transition='transform .12s ease,background .4s');
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.transform=`perspective(900px) rotateX(${(y-.5)*10}deg) rotateY(${(x-.5)*-10}deg) scale(1.02)`;
+    c.style.setProperty('--gx',x*100+'%');c.style.setProperty('--gy',y*100+'%');
+  });
+  c.addEventListener('mouseleave',()=>{c.style.transition='transform .6s ease,background .4s';c.style.transform='perspective(900px) rotateX(0) rotateY(0) scale(1)';});
+});
+
+const cdEl=document.getElementById('cd'),crEl=document.getElementById('cr');
+const cdi=document.getElementById('cdi'),cri=document.getElementById('cri');
+let cx=0,cy=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cdEl.style.left=cx+'px';cdEl.style.top=cy+'px';});
+(function lp(){rx+=(cx-rx)*.1;ry+=(cy-ry)*.1;crEl.style.left=rx+'px';crEl.style.top=ry+'px';requestAnimationFrame(lp);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cdi.classList.add('h');cri.classList.add('h');});
+  el.addEventListener('mouseleave',()=>{cdi.classList.remove('h');cri.classList.remove('h');});
+});
+
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mob');
+hbg.addEventListener('click',()=>{hbg.classList.toggle('o');mob.classList.toggle('o');});
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hbg.classList.remove('o');mob.classList.remove('o');}));
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*70);io.unobserve(e.target);}});
+},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
